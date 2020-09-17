@@ -1,0 +1,10 @@
+include ':app'
+setBinding(new Binding([gradle: this]))
+evaluate(new File(
+  settingsDir,
+  '../myalarm_flutter_module/.android/include_flutter.groovy'
+))
+rootProject.name = "MyAlarm"
+
+include ':myalarm_flutter_module'
+project(':myalarm_flutter_module').projectDir = new File('../myalarm_flutter_module')
