@@ -1,4 +1,4 @@
-package com.example.myalarm.database;
+package com.example.myalarm.database.room;
 
 import android.content.Context;
 
@@ -12,11 +12,11 @@ public abstract  class AlarmEntityRoomDatabase extends RoomDatabase {
 
     private static volatile AlarmEntityRoomDatabase alarmRoomDb;
 
-    static AlarmEntityRoomDatabase getDatabase(final Context context) {
+    public static AlarmEntityRoomDatabase getDatabase(final Context context) {
         if (alarmRoomDb == null) {
             synchronized (AlarmEntityRoomDatabase.class) {
                 if (alarmRoomDb == null) {
-                    alarmRoomDb  = Room.databaseBuilder(context.getApplicationContext(),
+                    alarmRoomDb  = Room.databaseBuilder(context,
                             AlarmEntityRoomDatabase.class, "Alarm_Database")
                             .build();
                 }
