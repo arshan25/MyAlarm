@@ -35,6 +35,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 
+    //Gson implementaion
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     // Room components
     def roomVersion = '2.2.5'
