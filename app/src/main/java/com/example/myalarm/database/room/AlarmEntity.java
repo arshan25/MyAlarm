@@ -9,13 +9,13 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class AlarmEntity {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "AlarmId")
-    public Integer alarmId;
+    public Long alarmId;
 
     @NonNull
-    public Integer getAlarmId() {
+    public Long getAlarmId() {
         return alarmId;
     }
 
@@ -28,7 +28,7 @@ public class AlarmEntity {
         this.alarmData = alarmData;
     }
 
-    public void setAlarmId(@NonNull Integer alarmId) {
+    public void setAlarmId(@NonNull Long alarmId) {
         this.alarmId = alarmId;
     }
 
@@ -38,8 +38,7 @@ public class AlarmEntity {
 
 
 
-    public AlarmEntity(Integer alarmId, String alarmData){
-        this.alarmId = alarmId;
+    public AlarmEntity(String alarmData){
         this.alarmData = alarmData;
     }
 

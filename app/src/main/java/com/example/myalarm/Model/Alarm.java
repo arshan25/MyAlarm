@@ -1,5 +1,7 @@
 package com.example.myalarm.Model;
 
+import android.app.PendingIntent;
+
 import com.example.myalarm.utiltiy.AlarmJsonContract;
 
 import java.util.Calendar;
@@ -9,10 +11,69 @@ import java.util.Map;
 public class Alarm {
 
     /// To store alarm time
-    Calendar alarmTime;
+     Calendar alarmTime;
 
     /// snooze time after how much time alarm should re occur default range 5 - 120 min
     Integer snoozeTime;
+
+
+
+
+    public Calendar getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(Calendar alarmTime) {
+        this.alarmTime = alarmTime;
+    }
+
+    public Integer getSnoozeTime() {
+        return snoozeTime;
+    }
+
+    public void setSnoozeTime(Integer snoozeTime) {
+        this.snoozeTime = snoozeTime;
+    }
+
+    public Boolean getVibrate() {
+        return isVibrate;
+    }
+
+    public void setVibrate(Boolean vibrate) {
+        isVibrate = vibrate;
+    }
+
+    public Map<String, Boolean> getRepeatCustom() {
+        return repeatCustom;
+    }
+
+    public void setRepeatCustom(Map<String, Boolean> repeatCustom) {
+        this.repeatCustom = repeatCustom;
+    }
+
+    public int getRepeatType() {
+        return repeatType;
+    }
+
+    public void setRepeatType(int repeatType) {
+        this.repeatType = repeatType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     /// whether to vibrate when alarm is ringing
     Boolean isVibrate;
@@ -25,6 +86,10 @@ public class Alarm {
 
     ///Reason why the alarm needed
     String reason;
+
+    /// reason why alarm is active or not
+
+    Boolean active;
 
     public Alarm() {
         /// setting default time right now
@@ -42,8 +107,11 @@ public class Alarm {
         /// setting repeat custom
         repeatCustom = null;
 
-        ///setting resason to null;
+        ///setting reason to null;
         reason = null;
+
+        /// setting boolean to false;
+        active = false;
     }
 
     public Alarm(Map<String, Object> alarmData) {
@@ -51,11 +119,11 @@ public class Alarm {
         alarmTime = Calendar.getInstance();
         try {
 
-            Map<String, Integer> date = (Map) alarmData.get(AlarmJsonContract.alarmDate);
-            Map<String, Integer> time = ((Map) alarmData.get(AlarmJsonContract.alarmTime));
-            alarmTime.set(date.get(AlarmJsonContract.year), date.get(AlarmJsonContract.month),
-                    date.get(AlarmJsonContract.year), time.get(AlarmJsonContract.hour),
-                    time.get(AlarmJsonContract.minute));
+            Map<String, Integer> date = (Map<String,Integer>) alarmData.get(AlarmJsonContract.alarmDate);
+            Map<String, Integer> time = ((Map<String,Integer>) alarmData.get(AlarmJsonContract.alarmTime));
+            alarmTime.set(date.get(AlarmJsonContract.year), date.get(AlarmJsonContract.month)-1,
+                    date.get(AlarmJsonContract.day), time.get(AlarmJsonContract.hour),
+                    time.get(AlarmJsonContract.minute),0);
 
             /// setting default snooze time 5 min to 120 min
             snoozeTime = (Integer) alarmData.get(AlarmJsonContract.snoozeTime);
@@ -69,8 +137,12 @@ public class Alarm {
             /// setting repeat custom
             repeatCustom = (Map) alarmData.get(AlarmJsonContract.repeatCustom);
 
-            ///setting resason to null;
+            ///setting reason to null;
             reason = (String) alarmData.get(AlarmJsonContract.reason);
+
+            ///setting active
+            active = (Boolean) alarmData.get(AlarmJsonContract.active);
+
         }catch (Exception e) {
           throw e;
         }
@@ -84,6 +156,7 @@ public class Alarm {
                 ", isVibrate=" + isVibrate +
                 ", repeatCustom=" + repeatCustom +
                 ", repeatType=" + repeatType +
+                ", active=" + active +
                 ", reason='" + reason + '\'' +
                 '}';
     }
@@ -92,10 +165,10 @@ public class Alarm {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> time = new HashMap<>();
         Map<String, Object> date = new HashMap<>();
-        time.put(AlarmJsonContract.hour, alarm.alarmTime.get(Calendar.HOUR));
+        time.put(AlarmJsonContract.hour, alarm.alarmTime.get(Calendar.HOUR_OF_DAY));
         time.put(AlarmJsonContract.minute, alarm.alarmTime.get(Calendar.MINUTE));
         date.put(AlarmJsonContract.year, alarm.alarmTime.get(Calendar.YEAR));
-        date.put(AlarmJsonContract.month, alarm.alarmTime.get(Calendar.MONTH));
+        date.put(AlarmJsonContract.month, alarm.alarmTime.get(Calendar.MONTH)+1);
         date.put(AlarmJsonContract.day, alarm.alarmTime.get(Calendar.DAY_OF_MONTH));
         map.put(AlarmJsonContract.alarmTime, time);
         map.put(AlarmJsonContract.alarmDate, date);
@@ -104,6 +177,7 @@ public class Alarm {
         map.put(AlarmJsonContract.repeatType, alarm.repeatType);
         map.put(AlarmJsonContract.repeatCustom, alarm.repeatCustom);
         map.put(AlarmJsonContract.isVibrate, alarm.isVibrate);
+        map.put(AlarmJsonContract.active,alarm.active);
 
         return map;
 

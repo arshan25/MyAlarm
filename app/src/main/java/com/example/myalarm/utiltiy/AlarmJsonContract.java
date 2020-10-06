@@ -25,4 +25,6 @@ public class AlarmJsonContract {
     public static final String hour = "hour";
 
     public static final String minute = "minute";
+
+    public static final String active = "active";
 }
