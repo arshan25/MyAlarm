@@ -37,6 +37,7 @@ public class AlarmEntity {
     public String alarmData;
 
 
+    public AlarmEntity(){}
 
     public AlarmEntity(String alarmData){
         this.alarmData = alarmData;

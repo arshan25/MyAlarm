@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.view.Window;
@@ -24,6 +27,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     Button snooze;
     Button cancel;
+    Long alarmId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +38,11 @@ public class AlarmActivity extends AppCompatActivity {
         win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         Intent intent = getIntent();
-        Long alarmId = intent.getLongExtra("ALARMID",0);
+        alarmId = intent.getLongExtra("ALARMID",0);
         if(alarmId==0)
             Toast.makeText(getApplicationContext(),"Got o",Toast.LENGTH_LONG).show();
+
+
         snooze = findViewById(R.id.snooze);
         cancel = findViewById(R.id.cancel);
         snooze.setOnClickListener(view -> {
@@ -44,20 +50,31 @@ public class AlarmActivity extends AppCompatActivity {
         });
 
         cancel.setOnClickListener(view -> {
-            try {
-                AlarmEntity alarmEntity= new DatabaseHelper(this).getAlarmById(alarmId);
-                Gson gson = new Gson();
-                Alarm alarm = gson.fromJson(alarmEntity.getAlarmData(),Alarm.class);
-                alarm.setActive(false);
-                alarmEntity.setAlarmData(gson.toJson(alarm));
-                new DatabaseHelper(getApplicationContext()).updateAlarm(alarmEntity.alarmId,alarm);
-                new AlarmHelper(getApplicationContext()).cancelAlarm(alarm,alarmId);
-                finish();
-
-
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            finish();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        AlarmEntity alarmEntity;
+        Alarm alarm;
+        Ringtone ringtone;
+        try {
+            alarmEntity =   new DatabaseHelper(getApplicationContext()).getAlarmById(alarmId);
+            if(alarmEntity!=null) {
+                Gson gson = new Gson();
+                Uri uri;
+                alarm = gson.fromJson(alarmEntity.getAlarmData(), Alarm.class);
+                if(alarm.getRingtonePath()==null)
+                    uri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(),RingtoneManager.TYPE_ALARM);
+                else
+                   uri = Uri.parse("file:///"+alarm.getRingtonePath());
+                ringtone = RingtoneManager.getRingtone(getApplicationContext(),uri);
+                ringtone.play();
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        super.onResume();
     }
 }

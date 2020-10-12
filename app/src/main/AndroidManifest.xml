@@ -27,24 +27,22 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TestActivity" />
-        <activity android:name=".AlarmActivity" />
-        <activity
-            android:name="io.flutter.embedding.android.FlutterActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-            android:hardwareAccelerated="true"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".AlarmActivity"
+            android:launchMode="singleInstance">
+
+        </activity>
+
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/ic_launcher_background" />
+                android:resource="@color/splashColor" />
         </activity>
     </application>
 

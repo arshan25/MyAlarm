@@ -1,6 +1,7 @@
 package com.example.myalarm.database.room;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -11,6 +12,9 @@ import java.util.List;
 
 @Dao
 public interface AlarmEntityDao {
+
+    @Delete
+    void deleteAlarms(AlarmEntity... alarmEntities);
 
     @Insert
     Long insert(AlarmEntity alarmEntity);
@@ -23,6 +27,7 @@ public interface AlarmEntityDao {
 
     @Update
     int updateUsers(AlarmEntity... alarmEntities);
+
 
 
 

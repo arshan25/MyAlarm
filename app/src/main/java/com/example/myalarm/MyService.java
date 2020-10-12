@@ -34,16 +34,23 @@ public class MyService extends Service {
         alarmIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         alarmIntent.putExtra("ALARMID",alarmId);
         AlarmEntity alarmEntity = null;
+        Alarm alarm = null;
         try {
             alarmEntity =   new DatabaseHelper(getApplicationContext()).getAlarmById(alarmId);
+            if(alarmEntity!=null) {
+                Gson gson = new Gson();
+                alarm = gson.fromJson(alarmEntity.getAlarmData(), Alarm.class);
+                if (alarm.getRepeatType() == 0)
+                    alarm.setActive(false);
+                alarmEntity.setAlarmData(gson.toJson(alarm));
+                new DatabaseHelper(getApplicationContext()).updateAlarm(alarmEntity.alarmId, alarm);
+            }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
-        if(alarmEntity!=null)
+        if(alarm!=null)
         {
-            Gson gson = new Gson();
-            Alarm alarm = gson.fromJson(alarmEntity.getAlarmData(),Alarm.class);
 
             if(alarm.getRepeatType()==0 || alarm.getRepeatType()==1)
                 startActivity(alarmIntent);

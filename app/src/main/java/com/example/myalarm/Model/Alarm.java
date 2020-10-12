@@ -1,6 +1,5 @@
 package com.example.myalarm.Model;
 
-import android.app.PendingIntent;
 
 import com.example.myalarm.utiltiy.AlarmJsonContract;
 
@@ -15,7 +14,6 @@ public class Alarm {
 
     /// snooze time after how much time alarm should re occur default range 5 - 120 min
     Integer snoozeTime;
-
 
 
 
@@ -91,6 +89,19 @@ public class Alarm {
 
     Boolean active;
 
+
+    /// Ringtone path
+
+    public String getRingtonePath() {
+        return ringtonePath;
+    }
+
+    public void setRingtonePath(String ringtonePath) {
+        this.ringtonePath = ringtonePath;
+    }
+
+    String ringtonePath;
+
     public Alarm() {
         /// setting default time right now
         alarmTime = Calendar.getInstance();
@@ -112,6 +123,9 @@ public class Alarm {
 
         /// setting boolean to false;
         active = false;
+
+        ///setting ringtone path to null
+        ringtonePath = null;
     }
 
     public Alarm(Map<String, Object> alarmData) {
@@ -143,6 +157,9 @@ public class Alarm {
             ///setting active
             active = (Boolean) alarmData.get(AlarmJsonContract.active);
 
+            /// setting ringtone path
+            ringtonePath = (String)alarmData.get(AlarmJsonContract.ringtonePath);
+
         }catch (Exception e) {
           throw e;
         }
@@ -158,6 +175,7 @@ public class Alarm {
                 ", repeatType=" + repeatType +
                 ", active=" + active +
                 ", reason='" + reason + '\'' +
+                ", ringtonePath="+ringtonePath+
                 '}';
     }
 
@@ -178,6 +196,7 @@ public class Alarm {
         map.put(AlarmJsonContract.repeatCustom, alarm.repeatCustom);
         map.put(AlarmJsonContract.isVibrate, alarm.isVibrate);
         map.put(AlarmJsonContract.active,alarm.active);
+        map.put(AlarmJsonContract.ringtonePath,alarm.ringtonePath);
 
         return map;
 

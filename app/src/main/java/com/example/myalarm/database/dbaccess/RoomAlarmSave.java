@@ -34,6 +34,10 @@ public class RoomAlarmSave implements StoreAlarm {
         return new UpdateAlarmsAsyncTask(alarmEntityDao).execute(alarmEntities).get();
     }
 
+    public void delete(AlarmEntity... alarmEntities){
+        new DeleteAlarmsAsyncTask(alarmEntityDao).execute(alarmEntities);
+    }
+
 
     public AlarmEntity getAlarmById(Long id) throws ExecutionException, InterruptedException {
 
@@ -97,6 +101,18 @@ public class RoomAlarmSave implements StoreAlarm {
         @Override
         protected List<AlarmEntity> doInBackground(Long... longs) {
             return alarmEntityDao.getAlarmById(longs[0]);
+        }
+    }
+
+    private class DeleteAlarmsAsyncTask extends AsyncTask<AlarmEntity,Void,Void>{
+        public DeleteAlarmsAsyncTask(AlarmEntityDao alarmEntityDao) {
+
+        }
+
+        @Override
+        protected Void doInBackground(AlarmEntity... alarmEntities) {
+             alarmEntityDao.deleteAlarms(alarmEntities);
+             return null;
         }
     }
 }

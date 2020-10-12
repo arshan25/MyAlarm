@@ -27,4 +27,6 @@ public class AlarmJsonContract {
     public static final String minute = "minute";
 
     public static final String active = "active";
+
+    public static final String ringtonePath = "ringtonePath";
 }

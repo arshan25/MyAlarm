@@ -3,4 +3,11 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="circleBackground">#A6EDD0</color>
+    <color name="GradientStartColor">#000428</color>
+    <color name="GradientEndColor">#004e92</color>
+    <color name="GradientCenterColor">#243B55</color>
+    <color name="splashColor">#2a3444</color>
+
+
 </resources>

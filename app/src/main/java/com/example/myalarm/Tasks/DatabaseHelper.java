@@ -10,6 +10,7 @@ import com.example.myalarm.database.dbaccess.RoomAlarmSave;
 import com.example.myalarm.database.room.AlarmEntity;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -42,6 +43,19 @@ public class DatabaseHelper {
     public  Long createAlarm(Alarm alarm) throws ExecutionException, InterruptedException {
         Toast.makeText(context,"Alarm set Successfully",Toast.LENGTH_LONG).show();
         return roomOperations.insert(new AlarmEntity(new Gson().toJson(alarm)));
+
+    }
+
+    public void deleteAlarms(List<Integer> alarmIds)
+    {
+
+        for(Integer alarmId : alarmIds)
+        {
+            AlarmEntity alarmEntity = new AlarmEntity();
+            alarmEntity.setAlarmId(alarmId.longValue());
+            roomOperations.delete(alarmEntity);
+        }
+
 
     }
 }
